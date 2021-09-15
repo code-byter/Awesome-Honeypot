@@ -45,7 +45,7 @@ Next, the docker containers can be launched. This might take a while until all a
 sudo docker-compose up -d
 ```
 
-You can verify if the elasticsearch database is operational by the folowing curl command. 
+You can verify if the elasticsearch database is operational by the folowing curl command. You might have to wait some minutes until the command works.
 ```text
 root@ubuntu-s-2vcpu-2gb-fra1-01:~/Honeypot# curl localhost:9200
 {
