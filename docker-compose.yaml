@@ -1,0 +1,85 @@
+version: '3'
+
+volumes:
+  cowrie-etc:
+    driver: local
+  cowrie-var:
+    driver: local
+  cowrie-src:
+    driver: local
+  elasticsearch-data:
+    driver: local
+
+services:
+  cowrie:
+    restart: always
+    image: cowrie/cowrie:latest
+    container_name: cowrie-cowrie
+    ports:
+      - "22:2222"
+      - "23:2223"
+    volumes:
+      - cowrie-etc:/cowrie/cowrie-git/etc
+      - cowrie-var:/cowrie/cowrie-git/var
+      - cowrie-src:/cowrie/cowrie-git/src
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.1
+    container_name: cowrie-elasticsearch
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - stack
+
+  kibana:
+    container_name: cowrie-kibana
+    image: docker.elastic.co/kibana/kibana:7.14.1
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    depends_on: 
+      - elasticsearch
+    networks:
+      - stack
+
+  filebeat:
+    container_name: cowrie-filebeat
+    image: docker.elastic.co/beats/filebeat:7.14.1
+    volumes:
+      - ./elastic-config/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - cowrie-var:/cowrie/cowrie-git/var
+    depends_on: 
+      - elasticsearch
+      - logstash
+    networks:
+      - stack
+
+  logstash:
+    container_name: cowrie-logstash
+    image: docker.elastic.co/logstash/logstash:7.14.1
+    volumes:
+      - ./elastic-config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./GeoLite2-City.mmdb:/opt/logstash/vendor/geoip/GeoLite2-City.mmdb
+    depends_on: 
+      - elasticsearch
+    networks:
+      - stack
+
+networks:
+  stack: 
