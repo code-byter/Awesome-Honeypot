@@ -1,0 +1,33 @@
+name: Build & Deploy
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      
+      - name: Copy source files
+        uses: easingthemes/ssh-deploy@v2.2.11
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-rltgoDzvO"
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USERNAME }}
+          REMOTE_PORT: ${{ secrets.SSH_PORT }}
+          TARGET: /deploy/
+
+      - name: Launch docker container
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          port: ${{ secrets.SSH_PORT }}
+          host: ${{secrets.SSH_HOST}}
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          username: ${{ secrets.SSH_USERNAME }} 
+          script: |
+            cd /deploy
+            docker-compose up -d
+            sleep 3m
+            curl -XPOST "http://localhost:5601/api/saved_objects/_import" -H "kbn-xsrf: true" --form file=@elastic-config/dashboard.ndjson

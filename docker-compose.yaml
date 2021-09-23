@@ -67,6 +67,8 @@ services:
     depends_on: 
       - elasticsearch
       - logstash
+    command:
+      - "--strict.perms=false"
     networks:
       - stack
 
