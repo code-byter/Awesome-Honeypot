@@ -72,7 +72,7 @@ Once your elasticsearch database is operational, you can import the dashboard co
 bash setup_index.sh
 ```
 
-## Acesss
+## Access
 
 The data can be accessed through the Kibana web interface on port ``5601``
 - [Discover](http://localhost:5601/app/discover) lists the individual logs. It's useful to get an overview of the data and query it.
