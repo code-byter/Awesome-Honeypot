@@ -16,7 +16,7 @@ services:
     image: cowrie/cowrie:latest
     container_name: cowrie-cowrie
     ports:
-      - "2222:2222"
+      - "22:2222"
       - "23:2223"
     volumes:
       - cowrie-var:/cowrie/cowrie-git/var
