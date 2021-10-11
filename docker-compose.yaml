@@ -16,12 +16,13 @@ services:
     image: cowrie/cowrie:latest
     container_name: cowrie-cowrie
     ports:
-      - "22:2222"
+      - "2222:2222"
       - "23:2223"
     volumes:
-      - cowrie-etc:/cowrie/cowrie-git/etc
       - cowrie-var:/cowrie/cowrie-git/var
       - cowrie-src:/cowrie/cowrie-git/src
+      - ./cowrie-config/cowrie.cfg:/cowrie/cowrie-git/etc/cowrie.cfg
+      - ./cowrie-config/motd:/cowrie/cowrie-git/honeyfs/etc/motd
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.14.1
