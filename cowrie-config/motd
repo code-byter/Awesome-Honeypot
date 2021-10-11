@@ -1,0 +1,24 @@
+Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.4.0-88-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Mon Oct 11 19:46:06 UTC 2021
+
+  System load:                      0.39
+  Usage of /:                       27.5% of 48.29GB
+  Memory usage:                     83%
+  Swap usage:                       26%
+  Processes:                        145
+  Users logged in:                  0
+  IPv4 address for br-2511476db680: 122.29.0.1
+  IPv4 address for br-851ee5ee90ad: 122.15.0.1
+  IPv4 address for docker0:         122.12.0.1
+  IPv4 address for eth0:            69.420.69.420
+  IPv4 address for eth0:            10.10.0.6
+  IPv4 address for eth1:            10.111.0.3
+
+76 updates can be applied immediately.
+1 of these updates is a standard security update.
+To see these additional updates run: apt list --upgradable
